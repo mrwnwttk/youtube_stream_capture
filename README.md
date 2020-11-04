@@ -1,5 +1,5 @@
 # youtube_stream_capture
-Record YouTube livestreams from start to finish, that includes the ability to rewind up to 12 hours regardless of whether the actual YouTube player allows it or not.
+Record YouTube livestreams from start to finish, that includes the ability to rewind up to 12 hours regardless of whether the actual YouTube player allows it or not. Unlike other recording solutions such as streamlink, youtube_stream_capture does not need to be restarted after six hours and therefore can record livestreams without any gaps.
 
 ## Installation
 Requires `python3`, `aria2c`, `ffmpeg` as well as `ffprobe` (usually bundled with ffmpeg) to be installed and on your systems' PATH.
