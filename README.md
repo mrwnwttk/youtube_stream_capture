@@ -12,6 +12,8 @@ $ sudo apt-get install aria2
 $ python3 -m pip install requests
 ```
 
+If you're more of a visual learner, [here is a video](https://www.youtube.com/watch?v=vsLhLB7-LV0) showing you how to install and use the script.
+
 ## Usage
 Starting the livestream capture:
 ```
