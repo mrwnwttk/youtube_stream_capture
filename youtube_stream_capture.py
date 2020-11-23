@@ -18,6 +18,9 @@ colorama.init()
 def print_error(message):
 	print(colorama.Fore.RED + f"[ERROR] {message}" + colorama.Style.RESET_ALL)
 
+def print_warning(message):
+	print(colorama.Fore.YELLOW + f"[WARNING] {message}" + colorama.Style.RESET_ALL)
+
 audio_base_url = ""
 video_base_url = ""
 video_k = 0
