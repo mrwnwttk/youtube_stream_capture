@@ -7,10 +7,16 @@ import json
 import time
 import requests
 from datetime import datetime, timedelta
+import colorama
 
 retries = 20
 tries = 0
 dash_tries = 0
+
+colorama.init()
+
+def print_error(message):
+	print(colorama.Fore.RED + f"[ERROR] {message}" + colorama.Style.RESET_ALL)
 
 audio_base_url = ""
 video_base_url = ""
@@ -59,18 +65,7 @@ folder_suffix = folder_suffix[1]
 if not os.path.isdir('segments_{}'.format(folder_suffix)):
 	os.mkdir('segments_{}'.format(folder_suffix))
 
-class bcolors:
-    HEADER = '\033[35m' # Purple
-    OKBLUE = '\033[34m' # Dark Blue
-    OKGREEN = '\033[32m' # Dark Green
-    WARNING = '\033[33m' # Yellow
-    FAIL = '\033[31m' # Red
-    ENDC = '\033[0m' # Reset 
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
-def print_error(message):
-	print(f"{bcolors.FAIL}[ERROR] {message}{bcolors.ENDC}")
 
 # Could I just have used an already existing mpeg-dash parser? Probably.
 # Did the one I could find have any documentation?
