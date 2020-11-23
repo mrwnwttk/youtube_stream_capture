@@ -36,3 +36,6 @@ The `cookie` field inside of `youtube_stream_capture.py` has intentionally been 
 Livestreams that have been running for multiple days (such as the 24/7 music livestreams) are not supported. youtube_stream_capture attempts to go back to the very first segment of a livestream by design. The first segments of those livestreams have long been deleted at this point, so the script just fails.
 
 Support for VP9 livestreams has been added, but is highly experimental at this point and therefore commented out. Use at your own risk and don't bother opening up any issues if something breaks or the video goes out of sync. I don't want to deal with it.
+
+## License
+The source code is licensed under GPL v3. For more information, consult the LICENSE file.
