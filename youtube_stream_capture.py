@@ -22,15 +22,15 @@ video_lmt_number = 0
 audio_lmt_number = 0
 
 quality_video_ranking = [
-					402, 138, 					# 4320p: AV1 HFR | VP9 HFR | H.264
+					402, 138, 		# 4320p: AV1 HFR | VP9 HFR | H.264
 					401, 266,		# 2160p: AV1 HFR | VP9.2 HDR HFR | VP9 HFR | VP9 | H.264 
 					400, 264,		# 1440p: AV1 HFR | VP9.2 HDR HFR | VP9 HFR | VP9 | H.264
 					399, 299, 137,	# 1080p: AV1 HFR | VP9.2 HDR HFR | VP9 HFR | VP9 | H.264 HFR | H.264
 					398, 298, 136,	# 720p: AV1 HFR | VP9.2 HDR HFR | VP9 HFR | VP9 | H.264 HFR | H.264
-					397, 135,				# 480p: AV1 | VP9.2 HDR HFR | VP9 | H.264
-					396, 134,				# 360p: AV1 | VP9.2 HDR HFR | VP9 | H.264
-					395, 133, 			# 240p: AV1 | VP9.2 HDR HFR | VP9 | H.264
-					394, 160				# 144p: AV1 | VP9.2 HDR HFR | VP9 | H.264
+					397, 135,		# 480p: AV1 | VP9.2 HDR HFR | VP9 | H.264
+					396, 134,		# 360p: AV1 | VP9.2 HDR HFR | VP9 | H.264
+					395, 133, 		# 240p: AV1 | VP9.2 HDR HFR | VP9 | H.264
+					394, 160		# 144p: AV1 | VP9.2 HDR HFR | VP9 | H.264
 					]
 quality_audio_ranking = [140]
 
