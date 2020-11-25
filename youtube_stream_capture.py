@@ -8,6 +8,7 @@ import time
 import requests
 from datetime import datetime, timedelta
 import colorama
+import pathlib
 
 retries = 20
 tries = 0
@@ -59,19 +60,65 @@ quality_audio_ranking = [140]
 # 					394, 330, 278, 160				# 144p: AV1 | VP9.2 HDR HFR | VP9 | H.264
 # 					]
 # quality_audio_ranking = [251,250,249,172,171,141,140,139]
-try:
-	segment_number = int(sys.argv[2])
-except:
-	segment_number = 0
+
+
+args = sys.argv
+segment_number = 0
+folder_suffix = ""
+output_directory = ""
+segment_folder_name = ""
+
+
+# Argument parsing
+for index, element in enumerate(args):
+	# Get video key
+	if '?v=' in element:
+		folder_suffix = element.split('?v=')[1]
+		if '&' in folder_suffix: 
+			folder_suffix = folder_suffix.split('&')[0]
+
+		segment_folder_name = f"segments_{folder_suffix}"
+
+	if '--start-segment' == element:
+		try:
+			segment_number = int(args[index + 1])
+		except:
+			print_warning("Failed to get segment number, setting it to 0!")
+			segment_number = 0
+
+	if '--output-directory' == element:
+		try:
+			output_directory = pathlib.Path(args[index + 1])
+			output_directory = output_directory.absolute()
+			if not output_directory.exists():
+				print_warning("Output directory does not exist, defaulting to the root directory of the script...")
+				output_directory = ""
+			else:
+				print_info(f"Set output directory to {output_directory}")
+		except Exception as e:
+			print(e)
+			print_warning("Output directory could not be set, defaulting to the root directory of the script...")
+			output_directory = ""
+
+if folder_suffix == "":
+	print_error("No stream link given! Exiting now...")
+	exit()
 
 startTime = datetime.now()
 
-folder_suffix = sys.argv[1].split('?v=')
-folder_suffix = folder_suffix[1]
-if not os.path.isdir('segments_{}'.format(folder_suffix)):
-	os.mkdir('segments_{}'.format(folder_suffix))
+# Create folder in root if no output path given
+if output_directory == "":
+	output_directory = pathlib.Path.cwd() / segment_folder_name
+	print(output_directory)
+	if not pathlib.Path.is_dir(output_directory):
+		pathlib.Path.mkdir(output_directory)
+		print_info(f"Created directory {output_directory}")
 
-
+else:
+	output_directory = output_directory / segment_folder_name
+	if not pathlib.Path.is_dir(output_directory):
+		pathlib.Path.mkdir(output_directory)
+		print_info(f"Created directory {output_directory}")
 
 # Could I just have used an already existing mpeg-dash parser? Probably.
 # Did the one I could find have any documentation?
@@ -204,6 +251,7 @@ def get_new_segment(dash_content, itag, old_segment_number):
 		return "{}sq/{}/{}".format(video_base_url, old_segment_number, video_lmt_number - (video_lmt_distance * (old_segment_number)))
 
 def run_script():
+	global output_directory
 	global segment_number
 	global dash_tries
 	req = requests.get(sys.argv[1])
@@ -326,7 +374,7 @@ def run_script():
 					dash_tries += 1
 					time.sleep(4)
 
-			os.system("aria2c -c --auto-file-renaming=false --max-tries=100 --retry-wait=5 -j 3 -x 3 -s 3 -k 1M \"{}\" -o \"segments_{}/{}_{}_video.ts\"".format(video_segment_list[segment_number], filename_thing, segment_number, filename_thing))
+			os.system("aria2c -c --auto-file-renaming=false --max-tries=100 --retry-wait=5 -j 3 -x 3 -s 3 -k 1M \"{}\" -d \"{}\" -o \"{}\"".format(video_segment_list[segment_number], output_directory, f"{segment_number}_{filename_thing}_video.ts"))
 			while(True):
 				try:
 					r = session.head(audio_segment_list[segment_number])
@@ -336,9 +384,10 @@ def run_script():
 				except:
 					time.sleep(2)
 
-			os.system("aria2c -c --auto-file-renaming=false --max-tries=100 --retry-wait=5 -j 3 -x 3 -s 3 -k 1M \"{}\" -o \"segments_{}/{}_{}_audio.ts\"".format(audio_segment_list[segment_number], filename_thing, segment_number, filename_thing))
-			try:					
-				if os.path.getsize('segments_{}/{}_{}_video.ts'.format(filename_thing, segment_number,filename_thing)) < 2000 or os.path.getsize('segments_{}/{}_{}_audio.ts'.format(filename_thing,segment_number,filename_thing)) < 2000:
+			os.system("aria2c -c --auto-file-renaming=false --max-tries=100 --retry-wait=5 -j 3 -x 3 -s 3 -k 1M \"{}\" -d \"{}\" -o \"{}\"".format(audio_segment_list[segment_number], output_directory, f"{segment_number}_{filename_thing}_audio.ts"))
+			try:
+				print("SIZE: {}".format(pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_video.ts").stat().st_size))
+				if pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_video.ts").stat().st_size < 2000 or pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_audio.ts").stat().st_size < 2000:
 					segment_number -= 4
 					print("Trying again!")
 					continue
