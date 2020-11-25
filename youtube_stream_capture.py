@@ -250,7 +250,6 @@ def run_script():
 			if x['streamingData']['adaptiveFormats'][i]['qualityLabel'] is not None:
 				quality_video_ids.append(x['streamingData']['adaptiveFormats'][i]['itag']) 
 		except:
-			print("Exception")
 			pass
 	
 	for i in range(len(x['streamingData']['adaptiveFormats'])):
@@ -258,7 +257,6 @@ def run_script():
 			if x['streamingData']['adaptiveFormats'][i]['audioQuality'] is not None:
 				quality_audio_ids.append(x['streamingData']['adaptiveFormats'][i]['itag']) 
 		except:
-			print("Exception")
 			pass
 
 	for i in quality_video_ranking:
