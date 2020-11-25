@@ -2,19 +2,25 @@
 
 import re
 import os
+
+# Yes, in that order.
+import colorama
+colorama.init()
+
 import sys
+
 import json
 import time
 import requests
 from datetime import datetime, timedelta
-import colorama
+
 import pathlib
 
 retries = 20
 tries = 0
 dash_tries = 0
 
-colorama.init()
+
 
 def print_error(message):
 	print(colorama.Fore.RED + f"[ERROR] {message}" + colorama.Style.RESET_ALL)
