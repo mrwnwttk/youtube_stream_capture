@@ -37,7 +37,7 @@ $ python3 youtube_stream_caputure.py https://www.youtube.com/watch?v=OIW4RnlYvgs
 $ python3 merge.py https://www.youtube.com/watch?v=OIW4RnlYvgs --output-directory /mnt/c/Users/mrwnwttk/Desktop/
 ```
 
-Note: if you have used the `--output-directory` parameter to start the livestream recording, then you also need to use as a parameter for `merge.py`.
+Note: if you used the `--output-directory` parameter to start the livestream recording, then you also need to use it as a parameter for `merge.py`.
 
 
 The `cookie` field inside of `youtube_stream_capture.py` has intentionally been left empty. If you run into any 429 errors (Too many requests), filling in the cookie with one from the Chrome inspect tool can help.
