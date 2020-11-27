@@ -344,6 +344,7 @@ def run_script():
 		try:
 
 			print("Segment number: {}".format(segment_number))
+			print(f"Total number of segments: {len(video_segment_list)}")
 			if segment_number > (len(video_segment_list)):
 				dash_content = requests.get(dash_url).text
 				time.sleep(50)
