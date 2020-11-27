@@ -115,7 +115,6 @@ startTime = datetime.now()
 # Create folder in root if no output path given
 if output_directory == "":
 	output_directory = pathlib.Path.cwd() / segment_folder_name
-	print(output_directory)
 	if not pathlib.Path.is_dir(output_directory):
 		pathlib.Path.mkdir(output_directory)
 		print_info(f"Created directory {output_directory}")
@@ -330,7 +329,6 @@ def run_script():
 	r = requests.get(dash_url).text
 
 	dash_content = requests.get(dash_url).text
-	print(len(dash_content))
 	global tries
 	global retries
 	video_segment_list = []
@@ -346,7 +344,6 @@ def run_script():
 		try:
 
 			print("Segment number: {}".format(segment_number))
-			print("len(): {}".format(len(video_segment_list)))
 			if segment_number > (len(video_segment_list)):
 				dash_content = requests.get(dash_url).text
 				time.sleep(50)
@@ -360,9 +357,7 @@ def run_script():
 			segment_number = segment_number - 5
 			continue
 
-		print(segment_number)
-		print("Length: {}".format(len(video_segment_list)))
-		print(video_segment_list[segment_number])
+		print(f"URL: {video_segment_list[segment_number]}")
 		if segment_number < len(video_segment_list):
 			
 			while(True):
@@ -392,7 +387,6 @@ def run_script():
 
 			os.system("aria2c -c --auto-file-renaming=false --max-tries=100 --retry-wait=5 -j 3 -x 3 -s 3 -k 1M \"{}\" -d \"{}\" -o \"{}\"".format(audio_segment_list[segment_number], output_directory, f"{segment_number}_{filename_thing}_audio.ts"))
 			try:
-				print("SIZE: {}".format(pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_video.ts").stat().st_size))
 				if pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_video.ts").stat().st_size < 2000 or pathlib.Path(output_directory / f"{segment_number}_{filename_thing}_audio.ts").stat().st_size < 2000:
 					segment_number -= 4
 					print("Trying again!")
@@ -401,7 +395,6 @@ def run_script():
 					# It worked!
 					segment_number += 1
 					global startTime
-					print("Segment: {}".format(segment_number))
 					print("Time since last reset: {}".format(datetime.now() - startTime))
 			except:
 					segment_number -= 3
