@@ -20,8 +20,6 @@ retries = 20
 tries = 0
 dash_tries = 0
 
-
-
 def print_error(message):
 	print(colorama.Fore.RED + f"[ERROR] {message}" + colorama.Style.RESET_ALL)
 
@@ -30,6 +28,17 @@ def print_warning(message):
 
 def print_info(message):
 	print(colorama.Fore.BLUE + f"[INFO] {message}" + colorama.Style.RESET_ALL)
+
+
+def parse_cookie_file(cookiefile):
+	cookies = {}
+	with open (cookiefile, 'r') as fp:
+		content = fp.read()
+		for line in content.split('\n'):
+			if 'youtube' in line:
+				elements = line.split('\t')
+				cookies[elements[5]] = elements[6]
+	return cookies
 
 audio_base_url = ""
 video_base_url = ""
@@ -73,7 +82,7 @@ segment_number = 0
 folder_suffix = ""
 output_directory = ""
 segment_folder_name = ""
-
+cookie_content = {}
 
 # Argument parsing
 for index, element in enumerate(args):
@@ -106,9 +115,29 @@ for index, element in enumerate(args):
 			print_warning("Output directory could not be set, defaulting to the root directory of the script...")
 			output_directory = ""
 
+	if '--cookie-file' == element:
+		try:
+			cookie_path = pathlib.Path(args[index + 1]).absolute()
+			if not cookie_path.exists():
+				print_error("Cookie file does not exist, defaulting to empty cookie...")
+				cookie_content = {}
+			else:
+				print_info(f"Found cookie at {cookie_path}")
+				cookie_content = parse_cookie_file(cookie_path)
+				if cookie_content == {}:
+					print_info("Empty cookie!")
+				else:
+					print_info(f"Cookie: {cookie_content}")
+
+		except:
+			print_error("Could not parse cookie, defaulting to empty cookie...")
+			cookie_content = {}
+
 if folder_suffix == "":
 	print_error("No stream link given! Exiting now...")
 	exit()
+
+exit()
 
 startTime = datetime.now()
 
@@ -259,13 +288,13 @@ def run_script():
 	global output_directory
 	global segment_number
 	global dash_tries
+	global cookie_content
 	req = requests.get(sys.argv[1])
 	headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
-    'cookie': ''
+	'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'
 	}
 
-	req = requests.get(sys.argv[1], headers=headers)
+	req = requests.get(sys.argv[1], headers=headers, cookies=cookie_content)
 	print("Status code: {}".format(req.status_code))
 	if req.status_code == 429:
 		print_error("Too many requests. Please try again later (or get yourself another IP, I don't make the rules).")
