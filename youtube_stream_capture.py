@@ -137,7 +137,6 @@ if folder_suffix == "":
 	print_error("No stream link given! Exiting now...")
 	exit()
 
-exit()
 
 startTime = datetime.now()
 
