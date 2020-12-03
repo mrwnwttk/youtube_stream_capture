@@ -227,11 +227,11 @@ f2_working = True
 os.remove(v1_test_path)
 os.remove(v2_test_path)
 
-if duration_v1 < (len(merge_v1_test_segments_audio) * 2):
+if duration_v1 < (len(merge_v1_test_segments_audio)):
 	print_warning("File of method 1 broken.")
 	f1_working = False
 
-if duration_v2 < (len(merge_v2_test_segments_audio) * 2):
+if duration_v2 < (len(merge_v2_test_segments_audio)):
 	print_warning("File of method 2 broken.")
 	f2_working = False
 
