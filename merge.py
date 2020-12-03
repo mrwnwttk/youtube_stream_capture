@@ -67,7 +67,7 @@ def merge_v2(audio_list, video_list, video_key, output_directory, segment_folder
 
 
 	with open(output_directory / f"concat_{video_key}_video.ts","wb") as f:
-		for i in audio_list:
+		for i in video_list:
 			with open(i, "rb") as ff:
 				shutil.copyfileobj(ff, f)
 
