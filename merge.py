@@ -71,7 +71,7 @@ def merge_v2(audio_list, video_list, video_key, output_directory, segment_folder
 			with open(i, "rb") as ff:
 				shutil.copyfileobj(ff, f)
 
-	os.system("ffmpeg -loglevel panic -y -i \"{}\" -c:a copy \"{}\"".format(output_directory / f"concat_{video_key}_video.ts", output_directory / f"{video_key}_video_v2_ffmpeg.mp4"))
+	os.system("ffmpeg -loglevel panic -y -i \"{}\" -c:v copy \"{}\"".format(output_directory / f"concat_{video_key}_video.ts", output_directory / f"{video_key}_video_v2_ffmpeg.mp4"))
 	os.remove(output_directory / f"concat_{video_key}_video.ts")
 
 
