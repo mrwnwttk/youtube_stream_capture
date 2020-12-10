@@ -299,10 +299,11 @@ def run_script():
 		print_error("Too many requests. Please try again later (or get yourself another IP, I don't make the rules).")
 		print_error("You might also just need to get yourself a new cookie. I'm not YouTube, what do I know?")
 		return -1
+
 	content_page = req.text
-	content_page = content_page.split("var ytplayer = ytplayer || {};ytplayer.config = ")
+	content_page = content_page.split("ytInitialPlayerResponse = ")
 	content_page = content_page[1]
-	content_page = content_page.split(";ytplayer.web_player_context_config = ")
+	content_page = content_page.split(";var meta = document.")
 	content_page = content_page[0]
 
 	filename_thing = sys.argv[1].split('?v=')
@@ -312,7 +313,7 @@ def run_script():
 	except Exception as e:
 		print(e)
 
-	x = json.loads(j['args']['player_response'])
+	x = j
 
 	for el in x['responseContext']['serviceTrackingParams']:
 		for i in el['params']:
