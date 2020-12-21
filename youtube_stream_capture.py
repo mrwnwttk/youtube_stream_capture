@@ -439,7 +439,7 @@ def run_script():
 
 		if segment_number >= len(video_segment_list):
 			print("Tries: {}".format(dash_tries))
-			time.sleep(1)
+			# time.sleep(1)
 			dash_content = requests.get(dash_url).text
 
 			video_segment_list.append(get_new_segment(dash_content, int(chosen_quality_video), segment_number))
