@@ -9,6 +9,8 @@ colorama.init()
 
 import sys
 
+import random
+
 import json
 import time
 import requests
@@ -288,12 +290,45 @@ def run_script():
 	global segment_number
 	global dash_tries
 	global cookie_content
-	req = requests.get(sys.argv[1])
-	headers = {
-	'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'
-	}
 
-	req = requests.get(sys.argv[1], headers=headers, cookies=cookie_content)
+
+	# Credit to youtube-dl for this:
+	# https://github.com/ytdl-org/youtube-dl/commit/14f29f087e6097feb46bdb84878924bc410a57eb
+
+	s = requests.Session()
+
+	# If we didn't explicitly set a cookie
+	# we might have to bypass the consent screen
+
+	if cookie_content == {}:	
+		s.get("https://www.youtube.com/")
+		if cookies.get("__Secure-3PSID") is None:
+			# We need to do the consent check thing
+			consent_id = None
+			consent = s.cookies.get("CONSENT")
+
+			if consent:
+				print(consent)
+				if "YES" in consent:
+				else:
+					consent_id = re.findall(r'PENDING\+(\d+)', consent)
+					if len(consent_id) > 0:
+						consent_id = consent_id[0]
+					else:
+						consent_id = random.randint(100,999)
+
+					del s.cookies["CONSENT"]
+					s.cookies.set("CONSENT",f"YES+cb.20210328-17-p0.en+FX+{consent_id}", domain="youtube.com")
+
+
+	if cookie_content == {}:
+		req = s.get(sys.argv[1])
+	else:
+		headers = {
+		'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'
+		}
+		req = requests.get(sys.argv[1], headers=headers, cookies=cookie_content)
+
 	print("Status code: {}".format(req.status_code))
 	if req.status_code == 429:
 		print_error("Too many requests. Please try again later (or get yourself another IP, I don't make the rules).")
@@ -303,7 +338,7 @@ def run_script():
 	content_page = req.text
 	content_page = content_page.split("ytInitialPlayerResponse = ")
 	content_page = content_page[1]
-	content_page = content_page.split(";var meta = document.")
+	content_page = content_page.split(";</script>")
 	content_page = content_page[0]
 
 	filename_thing = sys.argv[1].split('?v=')
