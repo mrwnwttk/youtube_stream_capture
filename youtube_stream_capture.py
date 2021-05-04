@@ -302,7 +302,7 @@ def run_script():
 
 	if cookie_content == {}:	
 		s.get("https://www.youtube.com/")
-		if cookies.get("__Secure-3PSID") is None:
+		if s.cookies.get("__Secure-3PSID") is None:
 			# We need to do the consent check thing
 			consent_id = None
 			consent = s.cookies.get("CONSENT")
@@ -310,6 +310,7 @@ def run_script():
 			if consent:
 				print(consent)
 				if "YES" in consent:
+					pass
 				else:
 					consent_id = re.findall(r'PENDING\+(\d+)', consent)
 					if len(consent_id) > 0:
