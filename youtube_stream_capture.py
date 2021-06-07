@@ -341,6 +341,8 @@ def run_script():
 	content_page = content_page[1]
 	content_page = content_page.split(";</script>")
 	content_page = content_page[0]
+	content_page = content_page.split(';var')
+	content_page = content_page[0]
 
 	filename_thing = sys.argv[1].split('?v=')
 	filename_thing = filename_thing[1]
