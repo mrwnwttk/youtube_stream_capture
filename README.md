@@ -1,6 +1,11 @@
 # youtube_stream_capture
 Record YouTube livestreams from start to finish, that includes the ability to rewind up to 12 hours regardless of whether the actual YouTube player allows it or not. Unlike other recording solutions such as streamlink, youtube_stream_capture does not need to be restarted after six hours and therefore can record livestreams without any gaps.
 
+## Deprecation notice
+This repository is no longer being maintained by me. I've marked it as read-only and disabled the issues tab. While it was the first tool capable of retroactively archiving YouTube livestreams, the code could always best be described as a whole bunch of band-aid fixes stacked on top of one another. Since then better tools have made their way onto the internet capable of doing the exact same thing, one of them being [ytarchive](https://github.com/Kethsar/ytarchive), which has many of the features that I wanted to implement myself but never got around to, including threads.
+
+This code might break at some point in the future, please don't bother reaching out to me about it.
+
 ## Installation
 Requires `python3`, `aria2c`, `ffmpeg` as well as `ffprobe` (usually bundled with ffmpeg) to be installed and on your systems' PATH.
 Example using Ubuntu:
